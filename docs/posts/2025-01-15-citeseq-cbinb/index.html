@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Cait Harrigan">
+<meta name="dcterms.date" content="2025-01-15">
+
+<title>Predicting cell surface protein abundance using foundation model embeddings – Cait Harrigan</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/ch_logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-01XD03JCPM"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-01XD03JCPM', { 'anonymize_ip': true});
+</script>
+
+
+<link rel="stylesheet" href="../../css/custom.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css">
+<link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Cait Harrigan</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../#research"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../#talks"> 
+<span class="menu-text">Talks</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../#teaching"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../files/cv_2pg.pdf"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Predicting cell surface protein abundance using foundation model embeddings</h1>
+            <p class="subtitle lead">I can’t believe it’s not better!</p>
+                                <div class="quarto-categories">
+                <div class="quarto-category">citizen science</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Cait Harrigan </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 15, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#exploring-mutual-information-of-embeddings-and-cell-surface-protein-abundance" id="toc-exploring-mutual-information-of-embeddings-and-cell-surface-protein-abundance" class="nav-link" data-scroll-target="#exploring-mutual-information-of-embeddings-and-cell-surface-protein-abundance">Exploring mutual information of embeddings and cell surface protein abundance</a></li>
+  <li><a href="#on-to-the-modelling" id="toc-on-to-the-modelling" class="nav-link" data-scroll-target="#on-to-the-modelling">On to the modelling</a></li>
+  <li><a href="#litmus-test" id="toc-litmus-test" class="nav-link" data-scroll-target="#litmus-test">Litmus test</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>Gigantic thanks to <a href="https://philechka.com/">Phil Fradkin</a> &amp; <a href="https://hmaan.ca/">Hassaan Maan</a> for their help putting together this post, and work on this project as a whole 😁. Here we’ll describe our submission to Toronto bioinformatics Hackathon 2024, which was awarded the runner up prize 🥈</p>
+<p>Find the project on github: <a href="https://github.com/hackbio-ca/cite-seq-foundation-model-evaluation">https://github.com/hackbio-ca/cite-seq-foundation-model-evaluation</a></p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Protein abundance is well known to be weakly correlated with RNA expression for most genes <span class="citation" data-cites="buccitelli_mrnas_2020">(<a href="#ref-buccitelli_mrnas_2020" role="doc-biblioref">Buccitelli and Selbach 2020</a>)</span>, and remains an important outstanding problem in the field of predictive molecular biology. Specifically, cell surface proteins appear to be under tight control, and tend to vary by cell type. Here we focused on a project which revolves around a unique and powerful dataset generated by CITE-seq experiments. These experiments simultaneously measure both RNA-seq and cell surface protein abundance in the same cell, providing us with a comprehensive view of cellular activity. The dataset is impressive in scale, encompassing measurements for approximately 20,000 genes and 200 proteins across 160,000 cells. We had a clear vision:</p>
+<p><strong><em>“Improve protein expression prediction from RNA by conditioning on representations of both cell state and the corresponding RNA sequence”</em></strong></p>
+<p>We know that processes controlling protein expression are in large part governed by sequence, such as mean ribosome loading, RNA half-life, and protein localization <span class="citation" data-cites="lin_evolutionary-scale_2023 fradkin_splicing_2023">(<a href="#ref-lin_evolutionary-scale_2023" role="doc-biblioref">Lin et al. 2023</a>; <a href="#ref-fradkin_splicing_2023" role="doc-biblioref">Fradkin et al. 2023</a>)</span>, and given that modern foundation models’ ability to predict these attributes, we anticipated that it would be straightforward to improve over a relatively unsophisticated baseline of defining cell-state with highly variable genes (HVG).</p>
+</section>
+<section id="dataset" class="level1">
+<h1>Dataset</h1>
+<div>
+<div id="fig-citeseq" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Title: CITE-seq data makes it possible to compare models for both sequence and expression">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-citeseq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="citeseq.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Overview of CITE-seq. Cells isolated in droplets are profiled for mRNA expression and oligo-tagged antibodies are used to profile cell-surface proteins. Modified from https://cite-seq.com/"><img src="citeseq.png" class="img-fluid figure-img" alt="Title: CITE-seq data makes it possible to compare models for both sequence and expression"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-citeseq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Overview of CITE-seq. Cells isolated in droplets are profiled for mRNA expression and oligo-tagged antibodies are used to profile cell-surface proteins. Modified from <a href="https://cite-seq.com/">https://cite-seq.com/</a>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>Cite-seq experiments from Stuart et al. <span class="citation" data-cites="hicks_missing_2018">(<a href="#ref-hicks_missing_2018" role="doc-biblioref">Hicks et al. 2018</a>)</span> provided a rich dataset that allowed us to explore the relationship between RNA expression and surface protein abundance at an unprecedented level of detail. However, it also comes with its own set of challenges, including the challenges related to sparsity of single-cell data<span class="citation" data-cites="hicks_missing_2018">(<a href="#ref-hicks_missing_2018" role="doc-biblioref">Hicks et al. 2018</a>)</span>, as well as complexities specific to cell surface protein abundance measurements such as background antibody binding and technical effects due to factors like cell size[<span class="citation" data-cites="stuart_comprehensive_2019">Stuart et al. (<a href="#ref-stuart_comprehensive_2019" role="doc-biblioref">2019</a>)</span>; mule_normalizing_2022].</p>
+<p>One of the challenges that we encountered is that there isn’t a trivial mapping between antibody used for protein pull down and individual protein sequences. Some proteins had multiple antibodies and certain antibodies pulled down whole complexes of protiens, making a 1:1 mapping challenging. We believe that some of the challenges that we encountered in predictive modeling are due to this complexity.</p>
+<p>One of the most notable aspects of this data is that the RNA-seq expression of a transcript doesn’t strongly correspond to the abundance of the protein on the cell surface. We expect that this discrepancy arises as a result of a variety of cellular processes including how cell surface proteins are regulated, and the complex dynamics of RNA and protein lifecycles within the cell. Our expectation was that by conditioning model predictions on sequence we could learn the rules governing some of these factors and improve predictive capacity.</p>
+<div>
+<div id="fig-rna_protein" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Title: predicting protein expression is a grand challenge of genomic medicine. Shows a playful diagram showing expectation, a cell with similar transcripts and surface protein abundance vs reality, a cell with the same transcription, but a mix of all sorts of proteins present">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rna_protein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="rna_protein.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: mRNA and surface protein expression don’t correlate well"><img src="rna_protein.png" class="img-fluid figure-img" alt="Title: predicting protein expression is a grand challenge of genomic medicine. Shows a playful diagram showing expectation, a cell with similar transcripts and surface protein abundance vs reality, a cell with the same transcription, but a mix of all sorts of proteins present"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rna_protein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: mRNA and surface protein expression don’t correlate well
+</figcaption>
+</figure>
+</div>
+</div>
+<p>Taking a step back,this dataset provides an excellent opportunity to test both RNA and protein sequence models, allowing us to evaluate how well they can capture the properties of these biomolecules. We can compare performance, and are able to evaluate cell embedding models like scGPT <span class="citation" data-cites="cui_scgpt_2024">(<a href="#ref-cui_scgpt_2024" role="doc-biblioref">Cui et al. 2024</a>)</span> against a baseline of highly variable genes. This is a really cool setting! In addition we’re able to take embeddings for RNA sequences and protein sequences and are able to compare not only within modality representational capability but also ask questions like: does addition of UTR sequences improve our predictive capacity?As far as we know, no one has been able to directly compare the utility of FMs trained for different modalities in this way before.</p>
+<div>
+<div id="fig-centra_dogma" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Title: foundation models and baselines tested. Three parts are shown. 1) RNA expression with RNA pileup. HVG: highly variable gene baseline. scGPT: single-cell count-based model. 2) Protein sequence with string of amino acids. ESM2 is a protein sequence-based model. 3) RNA sequence with a string of RNA nucleotides. Orthrus is a RNA sequence-based model.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-centra_dogma-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="central_dogma.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: "><img src="central_dogma.png" id="fig-centra_dogma" class="img-fluid figure-img" alt="Title: foundation models and baselines tested. Three parts are shown. 1) RNA expression with RNA pileup. HVG: highly variable gene baseline. scGPT: single-cell count-based model. 2) Protein sequence with string of amino acids. ESM2 is a protein sequence-based model. 3) RNA sequence with a string of RNA nucleotides. Orthrus is a RNA sequence-based model."></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-centra_dogma-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3
+</figcaption>
+</figure>
+</div>
+</div>
+<p>To recap: our hypotheses were twofold:</p>
+<ol type="1">
+<li>Embeddings from single cell foundation models can help in generalizing protein surface predictions to unseen cells.<br>
+</li>
+<li>Using a combination of sequence-based and single-cell foundation models, we can generalize to cell surface protein expression for previously unseen proteins and cells.</li>
+</ol>
+<p>Given that sequence foundation models have been useful for predicting physical properties of RNA and proteins e.g., expression level, half-life, mean ribosome load, structure, localization, we anticipated these embeddings will encode some informative protein properties. Additionally, we anticipated that cell embeddings would contribute valuable information about cell type and state, both of which may influence cell surface proteins.</p>
+<p>Assuming cell surface abundance is some function of these physical properties and cellular context, we expected to see enhanced predictive power and generalization to unseen cell contexts and proteins by leveraging these comprehensive embeddings.</p>
+</section>
+<section id="exploring-mutual-information-of-embeddings-and-cell-surface-protein-abundance" class="level1">
+<h1>Exploring mutual information of embeddings and cell surface protein abundance</h1>
+<div>
+<div id="fig-MI" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Title:Single-cell foundation models can increase the lower bound on MI between the RNA and protein modalities. Boxplot shows HVG and ESM2 with similarly low mutual information around 1.25, Orthrus slightly higher at 1.4 and scGPT much higher at 2.75 MI. Barplot shows different cell types, with four memory cell types ranking lowest out of 21 cell types">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MI-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="MI.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: "><img src="MI.png" id="fig-MI" class="img-fluid figure-img" alt="Title:Single-cell foundation models can increase the lower bound on MI between the RNA and protein modalities. Boxplot shows HVG and ESM2 with similarly low mutual information around 1.25, Orthrus slightly higher at 1.4 and scGPT much higher at 2.75 MI. Barplot shows different cell types, with four memory cell types ranking lowest out of 21 cell types"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-MI-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4
+</figcaption>
+</figure>
+</div>
+</div>
+<p>To start, we looked at the mutual information of embeddings with the target protein expression using LMI <span class="citation" data-cites="gowri_approximating_2024">(<a href="#ref-gowri_approximating_2024" role="doc-biblioref">Gowri et al. 2024</a>)</span>, a new cool method for approximating mutual information between embeddings in high dimensions.</p>
+<p>scGPT clearly showed higher mutual information compared to an HVG baseline. Based on these findings, in all the subsequent reported experiments we decided to combine sequence embeddings with scGPT.</p>
+<p>We also investigated MI of sequence based models with protein expression (combined with HVG via dot product scaling) which showed no major improvement in MI relative to the HVG baseline. One thing that remained on our minds is that if felt like there was no natural way to combine sequence model embeddings along with HVG baselines. The dot product is a somewhat ad-hoc way to do this, so take these results with a grain of salt (we certainly did).</p>
+<p>By the way, there appears to be a cell-type-specific effect to the informativeness (MI) of RNA expression with cell surface protein abundance.</p>
+</section>
+<section id="on-to-the-modelling" class="level1">
+<h1>On to the modelling</h1>
+<p>We tested two data splitting strategies to investigate our ability to generalize across both unseen cells and unseen proteins. We used a 60:10:30 train:val:test split in the protein direction, and a 70:15:15 split in the cell direction.</p>
+<div>
+<div id="fig-splits" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Title: Evaluating foundation models for protein prediction - data splits and scenarios. Matrix of 160k cells x 20k genes and 160k cells x 230 surface proteins. Data splits shown to generalize to unseen proteins and to unseen cells">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-splits-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="splits.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;5: "><img src="splits.png" id="fig-splits" class="img-fluid figure-img" alt="Title: Evaluating foundation models for protein prediction - data splits and scenarios. Matrix of 160k cells x 20k genes and 160k cells x 230 surface proteins. Data splits shown to generalize to unseen proteins and to unseen cells"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-splits-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5
+</figcaption>
+</figure>
+</div>
+</div>
+<p>In a predictive setting we found that the cell embeddings did not provide improvements over the highly variable genes baseline. However, sequence embeddings improved prediction when generalizing to unseen cells.</p>
+<div>
+<div id="fig-unseen-protein" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Title: sequence-based foundation models do help generalize to unseen cells. Barplot of validation pearsons R. HVGs and scGPT have similar value around 0.8, scGPT+ESM2, scGPT+Orthrus, scGPT+ESM2+Orthrus have similar value around 0.9">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-unseen-protein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unseen_cells.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;6: "><img src="unseen_cells.png" id="fig-unseen-protein" class="img-fluid figure-img" alt="Title: sequence-based foundation models do help generalize to unseen cells. Barplot of validation pearsons R. HVGs and scGPT have similar value around 0.8, scGPT+ESM2, scGPT+Orthrus, scGPT+ESM2+Orthrus have similar value around 0.9"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-unseen-protein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6
+</figcaption>
+</figure>
+</div>
+</div>
+<p>When we hold out proteins however, training with the sequence embeddings hurt performance!</p>
+<div>
+<div id="fig-unseen-cells" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Title: sequence-based foundation models do not help generalize to unseen proteins. Barplot of validation pearsons R. HVGs and scGPT have similar value around 0.37, scGPT+ESM2, scGPT+Orthrus, scGPT+ESM2+Orthrus have similar mean value around 0.15. Bars with EMS2 have larger error than the rest, ranging from 0.05 to 0.25">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-unseen-cells-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unseen_protein.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;7: "><img src="unseen_protein.png" id="fig-unseen-cells" class="img-fluid figure-img" alt="Title: sequence-based foundation models do not help generalize to unseen proteins. Barplot of validation pearsons R. HVGs and scGPT have similar value around 0.37, scGPT+ESM2, scGPT+Orthrus, scGPT+ESM2+Orthrus have similar mean value around 0.15. Bars with EMS2 have larger error than the rest, ranging from 0.05 to 0.25"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-unseen-cells-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7
+</figcaption>
+</figure>
+</div>
+</div>
+<p>Looking at the loss curves, we observed that the cell embedding models showed very little change in loss over the course of training. The sequence embedding models did seem to learn something, but we essentially ended up with a lot of overfitting.</p>
+<div>
+<div id="fig-loss-curves" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Training and validation loss curves. Training  loss decreases and plateaus over 5k training steps while validation loss remains flat. Barplots of validation loss, spearmanr, pearsonr all show scGPT + ESM as best performing model on average, although error bars are large and the difference between all models is relatively small">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-loss-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="Loss_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;8: "><img src="Loss_curves.png" id="fig-loss-curves" class="img-fluid figure-img" alt="Training and validation loss curves. Training  loss decreases and plateaus over 5k training steps while validation loss remains flat. Barplots of validation loss, spearmanr, pearsonr all show scGPT + ESM as best performing model on average, although error bars are large and the difference between all models is relatively small"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-loss-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="litmus-test" class="level1">
+<h1>Litmus test</h1>
+<p>To investigate further, we looked at the correlation between our predicted and true protein expression values across cells and compared that with the naive baseline of RNA - protein expression correlation. If we are unable to improve over native RNA-protein correlation then that means that addition of extra information is irrelevant for this problem.</p>
+<p>We were surprised to find that addition of cell state in the form of scGPT embeddings or HVGS showed a very small boost in performance. We noted that performance varied by cell type and surface protein, probably reflecting differences in average abundance. Consistent with our training loss curves, addition of sequence embeddings performed inconsistently - some proteins were better, while others performed worse.</p>
+<div id="fig-corr" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-corr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="corr_1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="HVG"><img src="corr_1.png" class="img-fluid figure-img" alt="Scatter plot of approximately 25 genes, all are close to the x=y line and most are slightly above it, indicating correlation of predictions is generally slightly better than correlation with raw expression. CD57 and CD56-2 are possible exceptions falling below the x=y line."></a></p>
+<figcaption>HVG</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="corr_2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="scGPT"><img src="corr_2.png" class="img-fluid figure-img" alt="Same style plot, most genes are close to or above the x=y line, with CD57 as possible exception."></a></p>
+<figcaption>scGPT</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="corr_3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="scGPT + Orthrus + ESM2"><img src="corr_3.png" class="img-fluid figure-img" alt="Same style scatterplot, most genes are not very close to the x=y line, about half are above and half are below, indicating correlation of true abundance with predicted abundance is better than with raw expression for some genes, but not others."></a></p>
+<figcaption>scGPT + Orthrus + ESM2</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-corr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Correlation of true protein abundance with prediction vs correlation with expression (click to zoom)
+</figcaption>
+</figure>
+</div>
+<p>Despite these challenges, we did make some important discoveries:</p>
+<ul>
+<li>We explored a dataset with which it’s possible to benchmark foundation models across three modalities jointly: RNA expression, RNA sequence, and protein sequence<br>
+</li>
+<li>Foundation models embeddings can statistically significantly increase mutual information between surface protein expression and RNA expression. There may be other ways to combine these to improve prediction.</li>
+</ul>
+<p>In conclusion, while our results weren’t as promising as we initially hoped, they highlight an important opportunity for researchers to design more generalizable and data-efficient models for this challenging task.</p>
+<p>There was debate in the group regarding the negative results. Some of us were of the opinion that this is not the right data to test capabilities of these models due to the signal-to-noise ratio and inherent complexity of generating this data <span class="citation" data-cites="mule_normalizing_2022 yin_characterization_2024">(<a href="#ref-mule_normalizing_2022" role="doc-biblioref">Mulè, Martins, and Tsang 2022</a>; <a href="#ref-yin_characterization_2024" role="doc-biblioref">Yin, Yajima, and Campbell 2024</a>)</span> while others were left with the impression that the current generation of models is not quite there yet. Lastly, it may be that the processes between RNA expression and surface protein abundance are much more complex than the task dictates, and that no matter how good an RNA or protein foundation model is, they cannot capture the intricacies because of the data they were trained on. This isn’t a limitation of the models, it’s a limitation of the data.</p>
+<div>
+<p><img src=".png" class="img-fluid">{#fig-disagree fig-alt=“Cartoon of three people. One looks argumentative and says the model is bad! One looks argumentative and says the data is bad! One looks unphased and says biology is complicated…}</p>
+</div>
+</section>
+<section id="conclusions" class="level1">
+<h1>Conclusions</h1>
+<p>This continues to be a challenging, open problem! Maybe FMs still have some way to go before their embeddings are immediately useful out of the box (at least in a MLP probe set up). Or it’s possible that measuring cell surface protein expression is technically challenging and isn’t a great setting for predictive evaluation. Either way this is an important direction since predicting protein expression from sequence and cheaper experimental modalities such as RNA seq is clearly an important medical and biological frontier.</p>
+<p>The set up itself is unique because of how we compared FMs trained for different modalities: sequence and RNA-expression level. This is no small feat! Looking forward, this project highlights an important aspect: carefully setting up the experiments. It’s critical that we did the protein-holdout exercise in addition, because otherwise the performance improvement contributed by the sequence models would likely have been inflated! ”Navigating the pitfalls of applying machine learning in genomic” from Whalen et al. <span class="citation" data-cites="whalen_navigating_2022">(<a href="#ref-whalen_navigating_2022" role="doc-biblioref">Whalen et al. 2022</a>)</span> continues to stand the test of time as a must read to ML + Bio practitioners.</p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-buccitelli_mrnas_2020" class="csl-entry" role="listitem">
+Buccitelli, Christopher, and Matthias Selbach. 2020. <span>“<span class="nocase">mRNAs</span>, Proteins and the Emerging Principles of Gene Expression Control.”</span> <em>Nature Reviews Genetics</em> 21 (10): 630–44. <a href="https://doi.org/10.1038/s41576-020-0258-4">https://doi.org/10.1038/s41576-020-0258-4</a>.
+</div>
+<div id="ref-cui_scgpt_2024" class="csl-entry" role="listitem">
+Cui, Haotian, Chloe Wang, Hassaan Maan, Kuan Pang, Fengning Luo, Nan Duan, and Bo Wang. 2024. <span>“<span class="nocase">scGPT</span>: Toward Building a Foundation Model for Single-Cell Multi-Omics Using Generative <span>AI</span>.”</span> <em>Nature Methods</em> 21 (8): 1470–80. <a href="https://doi.org/10.1038/s41592-024-02201-0">https://doi.org/10.1038/s41592-024-02201-0</a>.
+</div>
+<div id="ref-fradkin_splicing_2023" class="csl-entry" role="listitem">
+Fradkin, Philip, Ruian Shi, Bo Wang, Brendan Frey, and Leo J. Lee. 2023. <span>“Splicing <span>Up</span> <span>Your</span> <span>Predictions</span> with <span>RNA</span> <span>Contrastive</span> <span>Learning</span>.”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2310.08738">https://doi.org/10.48550/arXiv.2310.08738</a>.
+</div>
+<div id="ref-gowri_approximating_2024" class="csl-entry" role="listitem">
+Gowri, Gokul, Xiao-Kang Lun, Allon M. Klein, and Peng Yin. 2024. <span>“Approximating Mutual Information of High-Dimensional Variables Using Learned Representations.”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2409.02732">https://doi.org/10.48550/arXiv.2409.02732</a>.
+</div>
+<div id="ref-hicks_missing_2018" class="csl-entry" role="listitem">
+Hicks, Stephanie C, F William Townes, Mingxiang Teng, and Rafael A Irizarry. 2018. <span>“Missing Data and Technical Variability in Single-Cell <span>RNA</span>-Sequencing Experiments.”</span> <em>Biostatistics</em> 19 (4): 562–78. <a href="https://doi.org/10.1093/biostatistics/kxx053">https://doi.org/10.1093/biostatistics/kxx053</a>.
+</div>
+<div id="ref-lin_evolutionary-scale_2023" class="csl-entry" role="listitem">
+Lin, Zeming, Halil Akin, Roshan Rao, Brian Hie, Zhongkai Zhu, Wenting Lu, Nikita Smetanin, et al. 2023. <span>“Evolutionary-Scale Prediction of Atomic-Level Protein Structure with a Language Model.”</span> <em>Science</em> 379 (6637): 1123–30. <a href="https://doi.org/10.1126/science.ade2574">https://doi.org/10.1126/science.ade2574</a>.
+</div>
+<div id="ref-mule_normalizing_2022" class="csl-entry" role="listitem">
+Mulè, Matthew P., Andrew J. Martins, and John S. Tsang. 2022. <span>“Normalizing and Denoising Protein Expression Data from Droplet-Based Single Cell Profiling.”</span> <em>Nature Communications</em> 13 (1): 2099. <a href="https://doi.org/10.1038/s41467-022-29356-8">https://doi.org/10.1038/s41467-022-29356-8</a>.
+</div>
+<div id="ref-stuart_comprehensive_2019" class="csl-entry" role="listitem">
+Stuart, Tim, Andrew Butler, Paul Hoffman, Christoph Hafemeister, Efthymia Papalexi, William M. Mauck, Yuhan Hao, Marlon Stoeckius, Peter Smibert, and Rahul Satija. 2019. <span>“Comprehensive <span>Integration</span> of <span>Single</span>-<span>Cell</span> <span>Data</span>.”</span> <em>Cell</em> 177 (7): 1888–1902.e21. <a href="https://doi.org/10.1016/j.cell.2019.05.031">https://doi.org/10.1016/j.cell.2019.05.031</a>.
+</div>
+<div id="ref-whalen_navigating_2022" class="csl-entry" role="listitem">
+Whalen, Sean, Jacob Schreiber, William S. Noble, and Katherine S. Pollard. 2022. <span>“Navigating the Pitfalls of Applying Machine Learning in Genomics.”</span> <em>Nature Reviews Genetics</em> 23 (3): 169–81. <a href="https://doi.org/10.1038/s41576-021-00434-9">https://doi.org/10.1038/s41576-021-00434-9</a>.
+</div>
+<div id="ref-yin_characterization_2024" class="csl-entry" role="listitem">
+Yin, Yuan, Masanao Yajima, and Joshua D Campbell. 2024. <span>“Characterization and Decontamination of Background Noise in Droplet-Based Single-Cell Protein Expression Data with <span>DecontPro</span>.”</span> <em>Nucleic Acids Research</em> 52 (1): e4. <a href="https://doi.org/10.1093/nar/gkad1032">https://doi.org/10.1093/nar/gkad1032</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","closeEffect":"zoom","loop":false,"selector":".lightbox","openEffect":"zoom"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>
