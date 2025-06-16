@@ -77,13 +77,9 @@ cv_entries <- cv_entries %>% filter(website_show == T)
 :::
 
 
-### Peer Reviewed Publications
 
-`r cv_entries %>% filter(type=='publication_reviewed') %>% mutate(when = NA) %>% print_section() %>% gsub(pattern = 'Caitlin F. Harrigan', replacement = '**Caitlin F. Harrigan**')`
+`r cv_entries %>% filter(grepl("publication", type)) %>% mutate(when = NA) %>% print_section() %>% gsub(pattern = 'Caitlin F. Harrigan', replacement = '**Caitlin F. Harrigan**')`
 
-### Other Publications
-
-`r cv_entries %>% filter(type=='publication_other')  %>% mutate(when = NA) %>% print_section() %>% gsub(pattern = 'Caitlin F. Harrigan', replacement = '**Caitlin F. Harrigan**')`
 
 ### Posters
 
@@ -112,15 +108,16 @@ cv_entries <- cv_entries %>% filter(website_show == T)
 
 `r cv_entries %>% filter(type=='supervision') %>% print_section()`
 
-
-### Teaching Assistant Positions
-
-`r cv_entries %>% filter(type=='teaching') %>% print_section()`
-
 ### Testimonials 
 
 
 > "I was fortunate to work with Cait for almost a year and had a wonderful experience. She was patient, supportive, and skilled at explaining complicated concepts in biology and programming. As a mentor, she has a great sense of when to guide you through a problem and when to let you work through challenges on your own. She helped me grow as a researcher and writer and I’m grateful for everything I learned from her."
 
 > "As a mentor, Caitlin has greatly enhanced my ability to conduct research. She also provided valuable resources and aimed to make sure that I understood the fundamental concepts behind all the research conducted by breaking down difficult principles into easily comprehensible statements and thoughts. Additionally, she helped me find any sources of error as the research progressed. I enjoyed researching under her guidance, and I had an overall positive experience."  
+
+### Teaching Assistant Positions
+
+`r cv_entries %>% filter(type=='teaching') %>% print_section()`
+
+
 

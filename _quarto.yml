@@ -17,7 +17,7 @@ website:
       - text: 'Blog'
         href: blog.qmd
       - text: 'CV'
-        href: files/cv_2pg.pdf
+        href: files/cv.pdf
   google-analytics: 'G-01XD03JCPM'
 format:
   html:
