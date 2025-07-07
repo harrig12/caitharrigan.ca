@@ -41,38 +41,63 @@ make_buttons <- function(entry){
   return(buttons)
 }
 
-print_entry <- function(entry){
+#--------------#
+# Make entry
+#--------------#
+
+summarize_multi_year <- function(entries){
+  entries %>%
+    group_by(regular1) %>%
+    summarise(regular2 = paste0(year(begin), collapse=', ')) %>%
+    mutate(regular2 = paste0(regular1, ' (', regular2, ')')) %>%
+    pull(regular2) %>%
+    paste0(collapse = ', ')
+}
+
+
+format_info <- function(info){
+  info %>%
+    mutate(
+      bold = paste0('<b>', bold, '</b>'),
+      italic = paste0('<i>', italic, '</i>'),
+    ) 
+}
+
+print_entry <- function(entry, squish=F){
+  entry <- as_tibble_row(entry)
+
   lines <-  c('<div class="grid cv-entry">')
   lines <- c(lines, '<div class="g-col-1">')
-  # entry title
-  if (!is.na(entry['line1'])){
-    lines <- c(lines, '<p class="entry-bold">', entry['line1'], '</p>')
-  } 
-  # entry may have additional lines
-  if (!is.na(entry['line2'])) {
-    lines <- c(lines, '<p class="entry-plain">', entry['line2'], '</p>')
-  }
-  if (!is.na(entry['line3'])) {
-    lines <- c(lines, '<p class="entry-plain">', entry['line3'], '</p>')
-  }
-  if (!is.na(entry['line4'])) {
-    lines <- c(lines, '<p class="entry-italic">', entry['line4'], '</p>')
-  }
-  lines <- c(lines, '</div><div class="g-col-1">')
-  if (!is.na(entry['when'])){
-    lines <- c(lines, '<span class="entry-when">', entry['when'], '</span>')
+  
+  # entry info
+  info <- entry %>% select(bold:italic)
+  info <- format_info(info)[!is.na(info)]
+  
+  info <- ifelse(
+    squish, 
+    paste0(info, collapse = ', '),
+    paste0('<p class="entry-txt">', paste0(info, collapse = '</p><p class="entry-txt">'), '</p>')
+  )
+  
+  lines <- c(lines, info)
+  lines <- c(lines, '</div> <div class="g-col-1">')
+  # when
+  if (!is.na(entry[['when']])){
+    lines <- c(lines, '<span class="entry-when">', entry[['when']], '</span>')
   }
   # entry may have buttons 
-  if( any(c(!is.na(entry['view']), !is.na(entry['pdf']), !is.na(entry['pdf']))) ){
+  if( any(c(!is.na(entry[['view']]), !is.na(entry[['pdf']]), !is.na(entry[['code']]))) ){
     lines <- c(lines, make_buttons(entry))
   }
-  lines <- c(lines, '</div></div>')
+  lines <- c(lines, '</div> </div>')
   HTML(lines)
 }
 
-print_section <- function(entries){
-  paste(apply(entries , 1, print_entry), collapse = "")
+
+print_section <- function(entries, squish=F){
+   paste(apply(entries, 1, print_entry, squish=squish), collapse = "")
 }
+
 
 
 

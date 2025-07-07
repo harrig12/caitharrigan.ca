@@ -26,7 +26,7 @@ title: "Hi, I'm Cait"
 :::
 
 ::: {.g-col-sm-2 .g-col-md-1}
-<a href="mailto:cait(dot)harrigan(at)mail.utoronto.ca" class="btn btn-outline-primary" role="button" aria-label="email"><i class="fa-solid fa-envelope"></i></a>
+<a href="mailto:charrigan(at)cs.toronto.edu" class="btn btn-outline-primary" role="button" aria-label="email"><i class="fa-solid fa-envelope"></i></a>
 :::
 
 :::
@@ -34,7 +34,7 @@ title: "Hi, I'm Cait"
 
 ::: {.g-col-4 .g-col-sm-3}
 
-I am a graduate student at the University of Toronto supervised by [Quaid Morris](https://www.morrislab.ca/) and [Kieran Campbell](https://www.camlab.ca/), and a graduate researcher at the [Vector Institute](https://vectorinstitute.ai/) and [Ontario Institute for Cancer Research](https://oicr.on.ca/). I use machine learning to understand cancer evolution.
+  I am a PhD candidate at the University of Toronto supervised by [Quaid Morris](https://www.morrislab.ca/) and [Kieran Campbell](https://www.camlab.ca/). I am a Doctoral Fellow at the [UofT Data Sciences Institute](https://datasciences.utoronto.ca/) and a graduate researcher at the [Vector Institute](https://vectorinstitute.ai/) and [Ontario Institute for Cancer Research](https://oicr.on.ca/). I use machine learning to understand cancer evolution.
 
 I did my undergraduate studies at the University of Toronto, in Computational Biology and Statistics. I'm passionate about open science, and promoting great mentorship in the sciences.
 

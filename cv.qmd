@@ -5,21 +5,12 @@ title: "Cait Harrigan, MSc."
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 options(knitr.kable.NA = '')
-
 ```
 
 
 ```{r entries-setup, ehcho=F, warning=F, message=F}
 source('format_entries.R')
-source('format_bib.R')
-
-cv_entries <- cv_entries %>% subset(cv_long_show == T) 
-  
-
-publications <- "files/harrigan.bib"
-BibOptions(sorting = 'none')
-refs <- rev(ReadBib(publications))
-NoCite(refs)
+cv_entries <- cv_entries %>% subset(cv_long_show == T)
 ```
 
 <div id=cv_print_header>
@@ -29,9 +20,9 @@ Cait Harrigan, MSc.
 </p>
 
 <p style="font-weight:400; margin-bottom: 0.5em">
-cait.harrigan@mail.utoronto.ca \| View this CV online at [caitharrigan.ca/cv](https://caitharrigan.ca/cv)
+<i class="fa-solid fa-envelope"></i> charrigan@cs.toronto.edu &nbsp;&nbsp; <i class="fa-solid fa-globe"></i> caitharrigan.ca   &nbsp;&nbsp;  <i class="fa-brands fa-github"></i> harrig12 
 </p>
-</center>
+</center> 
 </div>
 
 
@@ -41,7 +32,7 @@ cait.harrigan@mail.utoronto.ca \| View this CV online at [caitharrigan.ca/cv](ht
 
 :::
 
-I am a graduate student at the University of Toronto supervised by [Quaid Morris](https://www.morrislab.ca/) and [Kieran Campbell](https://www.camlab.ca/). I'm a graduate researcher at the [Vector Institute](https://vectorinstitute.ai/) and Doctoral Fellow at the [UofT Data Sciences Institute](https://datasciences.utoronto.ca/). I use machine learning to understand cancer genomics by modelling the evolutionary constraints that underlie how mutations occur in DNA. I'm passionate about open science, and promoting great mentorship in the sciences.
+I am a PhD candidate at the University of Toronto supervised by [Quaid Morris](https://www.morrislab.ca/) and [Kieran Campbell](https://www.camlab.ca/). I am a Doctoral Fellow at the [UofT Data Sciences Institute](https://datasciences.utoronto.ca/) and a graduate researcher at the [Vector Institute](https://vectorinstitute.ai/) and [Ontario Institute for Cancer Research](https://oicr.on.ca/). I use machine learning to understand cancer genomics by modelling the evolutionary constraints that underlie how mutations occur in DNA. I'm passionate about open science, and promoting great mentorship in the sciences.
 
 
 ## Education
@@ -53,95 +44,77 @@ I am a graduate student at the University of Toronto supervised by [Quaid Morris
 
 `r cv_entries %>% filter(type=='work') %>% print_section()`
 
+## Fellowships & Awards
+
+`r cv_entries %>% filter(type=='grant' | type=='award') %>% print_section(squish=T)`
+
 ## Peer Reviewed Publications
 
 \* Indicates equal contribution
 
-```{r}
-ref_titles <- c()
-for (r in refs) { 
-  t <- r$title %>%
-    gsub(pattern = "[^[:alnum:]]", replacement = "") %>%
-    tolower()
-  ref_titles <- c(ref_titles, t)
-}
 
-sel_titles <- cv_entries %>% 
-  filter(type=='publication_reviewed') %>%
-  pull(line1) %>%
-  gsub(pattern = "[^[:alnum:]]", replacement = "") %>%
-  tolower()
-
-sel <- ref_titles %in% sel_titles
-```
-
-`r print_publications(refs[sel])`
+`r cv_entries %>% filter(grepl("publication_reviewed", type)) %>% mutate(when = NA) %>% print_section() %>% gsub(pattern = 'Caitlin F. Harrigan', replacement = '**Caitlin F. Harrigan**')`
 
 ## Other Publications
 
-`r print_publications(refs[!sel])`
-
+`r cv_entries %>% filter(grepl("publication_other", type)) %>% mutate(when = NA) %>% print_section() %>% gsub(pattern = 'Caitlin F. Harrigan', replacement = '**Caitlin F. Harrigan**')`
 
 ## Posters
 
-`r cv_entries %>% filter(type=='poster') %>% print_section()`
-
-## Fellowships & Awards
-
-`r cv_entries %>% filter(type=='grant' | type=='award') %>% print_section()`
+`r cv_entries %>% filter(type=='poster') %>% print_section(squish=T)`
 
 
 ## Academic Talks 
 
-`r cv_entries %>% filter(type=='talk_academic') %>% print_section()`
+`r cv_entries %>% filter(type=='talk_academic') %>% print_section(squish=T)`
 
 ## Guest Lectures
 
-`r cv_entries %>% filter(type=='guest_lecture') %>% print_section()`
+`r cv_entries %>% filter(type=='guest_lecture') %>% print_section(squish=T)`
 
 ## Other Talks
 
-`r cv_entries %>% filter(type=='talk_other') %>% print_section()`
+`r cv_entries %>% filter(type=='talk_other') %>% print_section(squish=T)`
 
 
-## Service
+## Academic service
 
 ```{r, echo=F, warning=F, message=F}
 # collate all service together
-pr <- cv_entries %>% 
-  filter(type == 'service_review') %>%
-  pull(line2) %>%
-  paste0(collapse = ', ')
-
-pc <- cv_entries %>%
-  filter(type == 'service_pc') %>%
-  group_by(line2) %>%
-  summarise(line3 = paste0(year(begin), collapse=', ')) %>%
-  mutate(line3 = paste0(line2, ' (', line3, ')')) %>%
-  pull(line3) %>%
-  paste0(collapse = ', ')
-
-pr <- c(
+s1 <- c(
     '<div class= short-entry>',
-    "<b>Peer review:</b> ",
-    pr,
+    "<b>Jouranl peer review:</b> ",
+    cv_entries %>% 
+      filter(type == 'service_referee_journal') %>% 
+      summarize_multi_year(),
     '</div>'
 )
 
-pc <- c(
+s2 <- c(
+    '<div class= short-entry>',
+    "<b>Conference referee:</b> ", 
+    cv_entries %>% 
+      filter(type == 'service_referee_conference') %>% 
+      summarize_multi_year(),
+    '</div>'
+)
+
+s3 <- c(
     '<div class= short-entry>',
     "<b>Conference program committee:</b> ", 
-    pc,
+    cv_entries %>% 
+      filter(type == 'service_pc') %>% 
+      summarize_multi_year(),
     '</div>'
 )
 
 ```
 
-`r HTML(pr)`
-`r HTML(pc)`
+`r HTML(s1)`
+`r HTML(s2)`
+`r HTML(s3)`
 
-
-## Research Mentorship
+## Student supervision
 
 `r cv_entries %>% filter(type=='supervision') %>% print_section()`
 
@@ -156,14 +129,28 @@ pc <- c(
 `r cv_entries %>% filter(type=='teaching') %>% print_section()`
 
 
-## Mentorship
+## Mentorship activities
 
 As part of my ongoing commitment to supporting students at all levels and background in engaging with computational biology, I make an effort to be available to provide guidance and resources to students, with a particular focus on creating an inclusive environment that fosters diverse perspectives and experiences. In addition to being a mentor through the organized programs listed here, I set aside ~2h/month for by-request 30 minute meetings.
 
 `r cv_entries %>% filter(type=='mentorship') %>% print_section()`
 
+## Professional training & Certifications
+
+`r cv_entries %>% filter(type=='professional_development') %>% print_section()`
+  
+## Hackathons
+
+`r cv_entries %>% filter(type=='hackathon') %>% print_section()`
+
+## Community activities
+
+`r cv_entries %>% filter(type=='volunteering') %>% print_section()`
+
 
 ---
+
+When I'm not doing the above, I like to play ultimate frisbee, scrabble, and I was once a competitive trampolinist at the national level.
 
 <center>
 Last updated: `r paste(lubridate::month(Sys.Date(), label=T), lubridate::year(Sys.Date()) )`
