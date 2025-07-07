@@ -52,8 +52,7 @@ I am a PhD candidate at the University of Toronto supervised by [Quaid Morris](h
 
 ## Peer reviewed publications
 
-\* Indicates equal contribution
-
+\* Indicates joint first authorship, † co-corresponding authorship
 
 `r cv_entries %>% filter(grepl("publication_reviewed", type)) %>% mutate(when = NA) %>% print_section() %>% gsub(pattern = 'Caitlin F. Harrigan', replacement = '<u>Caitlin F. Harrigan</u>')`
 
@@ -155,7 +154,7 @@ As part of my ongoing commitment to supporting students at all levels and backgr
 ## Community activities
 
 `r cv_entries %>% filter(type=='volunteering') %>% print_section(squish=T)`
-
+  
 <br>
 
 
