@@ -158,7 +158,6 @@ As part of my ongoing commitment to supporting students at all levels and backgr
 
 <br>
 
-When I'm not doing the above, I like to play ultimate frisbee, scrabble, and I used to compete at the national level in trampoline gymnastics.
 
 <center>
 Last updated: `r paste(lubridate::month(Sys.Date(), label=T), lubridate::year(Sys.Date()) )`
