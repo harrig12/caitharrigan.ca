@@ -11,22 +11,13 @@
 
 /* CV */
 
+
 .entry-when{
   text-align: right;
   display: block;
 }
 
-.entry-bold{
-  font-weight: bold;
-  margin-bottom: 0rem;
-}
-
-.entry-plain{
-  margin-bottom: 0rem;
-}
-
-.entry-italic{
-  font-style: italic;
+.entry-txt{
   margin-bottom: 0rem;
 }
 

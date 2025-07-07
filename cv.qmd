@@ -44,37 +44,35 @@ I am a PhD candidate at the University of Toronto supervised by [Quaid Morris](h
 
 `r cv_entries %>% filter(type=='work') %>% print_section()`
 
-## Fellowships & Awards
 
-`r cv_entries %>% filter(type=='grant' | type=='award') %>% print_section(squish=T)`
+## Academic talks 
 
-## Peer Reviewed Publications
+`r cv_entries %>% filter(type=='talk_academic') %>% print_section(squish=T)`
+
+
+## Peer reviewed publications
 
 \* Indicates equal contribution
 
 
-`r cv_entries %>% filter(grepl("publication_reviewed", type)) %>% mutate(when = NA) %>% print_section() %>% gsub(pattern = 'Caitlin F. Harrigan', replacement = '**Caitlin F. Harrigan**')`
+`r cv_entries %>% filter(grepl("publication_reviewed", type)) %>% mutate(when = NA) %>% print_section() %>% gsub(pattern = 'Caitlin F. Harrigan', replacement = '<u>Caitlin F. Harrigan</u>')`
 
-## Other Publications
+## Other publications
 
-`r cv_entries %>% filter(grepl("publication_other", type)) %>% mutate(when = NA) %>% print_section() %>% gsub(pattern = 'Caitlin F. Harrigan', replacement = '**Caitlin F. Harrigan**')`
+`r cv_entries %>% filter(grepl("publication_other", type)) %>% mutate(when = NA) %>% print_section() %>% gsub(pattern = 'Caitlin F. Harrigan', replacement = '<u>Caitlin F. Harrigan</u>')`
 
 ## Posters
 
 `r cv_entries %>% filter(type=='poster') %>% print_section(squish=T)`
 
 
-## Academic Talks 
+## Academic awards
 
-`r cv_entries %>% filter(type=='talk_academic') %>% print_section(squish=T)`
+`r cv_entries %>% filter(type=='award') %>% print_section()`
 
-## Guest Lectures
+## Grants
 
-`r cv_entries %>% filter(type=='guest_lecture') %>% print_section(squish=T)`
-
-## Other Talks
-
-`r cv_entries %>% filter(type=='talk_other') %>% print_section(squish=T)`
+`r cv_entries %>% filter(type=='grant') %>% print_section()`
 
 
 ## Academic service
@@ -116,41 +114,51 @@ s3 <- c(
 
 ## Student supervision
 
-`r cv_entries %>% filter(type=='supervision') %>% print_section()`
+`r cv_entries %>% filter(type=='supervision') %>% print_section(squish=T)`
 
-## Progam Administration
+## Guest lectures
 
-`r cv_entries %>% filter(type=='program_admin') %>% print_section()`
+`r cv_entries %>% filter(type=='guest_lecture') %>% print_section(squish=T)`
 
-## Teaching Assistant Positions
+## Other talks
+
+`r cv_entries %>% filter(type=='talk_other') %>% print_section(squish=T)`
+
+## Progam & event organization
+
+`r cv_entries %>% filter(type=='program_admin' | type == 'event_org') %>% print_section()`
+
+
+## Professional training 
+
+`r cv_entries %>% filter(type=='professional_development') %>% print_section()`
+  
+
+## Teaching assistant positions
 
 <em style="font-size:0.8em">Unless otherwise noted, school is University of Toronto</em>
 
-`r cv_entries %>% filter(type=='teaching') %>% print_section()`
+`r cv_entries %>% filter(type=='teaching') %>% print_section(squish=T)`
 
 
 ## Mentorship activities
 
 As part of my ongoing commitment to supporting students at all levels and background in engaging with computational biology, I make an effort to be available to provide guidance and resources to students, with a particular focus on creating an inclusive environment that fosters diverse perspectives and experiences. In addition to being a mentor through the organized programs listed here, I set aside ~2h/month for by-request 30 minute meetings.
 
-`r cv_entries %>% filter(type=='mentorship') %>% print_section()`
+`r cv_entries %>% filter(type=='mentorship') %>% print_section(squish=T)`
 
-## Professional training & Certifications
 
-`r cv_entries %>% filter(type=='professional_development') %>% print_section()`
-  
 ## Hackathons
 
-`r cv_entries %>% filter(type=='hackathon') %>% print_section()`
+`r cv_entries %>% filter(type=='hackathon') %>% print_section(squish=T)`
 
 ## Community activities
 
-`r cv_entries %>% filter(type=='volunteering') %>% print_section()`
+`r cv_entries %>% filter(type=='volunteering') %>% print_section(squish=T)`
 
+<br>
 
----
-
-When I'm not doing the above, I like to play ultimate frisbee, scrabble, and I was once a competitive trampolinist at the national level.
+When I'm not doing the above, I like to play ultimate frisbee, scrabble, and I used to compete at the national level in trampoline gymnastics.
 
 <center>
 Last updated: `r paste(lubridate::month(Sys.Date(), label=T), lubridate::year(Sys.Date()) )`

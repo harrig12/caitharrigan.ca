@@ -1,7 +1,4 @@
-# formatter.R
-
 library(tidyverse)
-#library(kableExtra)
 library(htmltools)
 library(lubridate)
 library(googlesheets4)
@@ -13,12 +10,13 @@ gs4_auth('cait.harrigan@mail.utoronto.ca')
 #--------------#
 
 cv_entries <- read_sheet("1JKlSIuDrfC1wa4V1zf4Si_Tu34upiBEn1DlvFfDeFh0", 
-                         sheet = 'new entries', col_types = "lllcDDccccccccc") %>%
+                         sheet = 'new entries', col_types = "lllcDDcccccccccc") %>%
   arrange(desc(pmax(year(end), year(begin), na.rm = T)), 
           desc(year(begin)), desc(month(begin))) %>%
   mutate(type = factor(type),
          when = format(begin, "%Om/%y"),
          end = ifelse(end >= now(), "present", format(end, "%Om/%y")),
+         end = ifelse(when==end, NA, end),
          when = ifelse(is.na(end), when, str_c(when, " - ", end))
          ) %>%
   filter(!is.na(begin))
@@ -76,10 +74,10 @@ print_entry <- function(entry, squish=F){
   info <- ifelse(
     squish, 
     paste0(info, collapse = ', '),
-    paste0('<p class="entry-txt">', paste0(info, collapse = '</p><p class="entry-txt">'), '</p>')
+    paste0(info, collapse = '</p><p class="entry-txt">')
   )
   
-  lines <- c(lines, info)
+  lines <- c(lines, paste0('<p class="entry-txt">', info, '</p>'))
   lines <- c(lines, '</div> <div class="g-col-1">')
   # when
   if (!is.na(entry[['when']])){
