@@ -6,7 +6,6 @@ date: 12-04-2022
 engine: knitr
 categories:
   - mentorship
-draft: false
 ---
 
 It's my second time organizing the [Toronto CS Graduate Application Assistance Program](https://sites.google.com/view/torontogaap) and it was a great experience!  

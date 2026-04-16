@@ -5,7 +5,6 @@ image: preview.png
 date: March 30, 2024
 categories:
   - citizen science
-  - passion project
 ---
 
 I built a website for the [IMERSS ecocultural mapping project](https://floeproject.org/ecocultural-mapping-project/) of Retreat Cove on Galiano, BC. 

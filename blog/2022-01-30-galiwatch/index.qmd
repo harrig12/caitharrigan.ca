@@ -6,7 +6,6 @@ date: 01-30-2022
 author: Cait Harrigan
 categories:
   - citizen science
-  - passion project
 ---
 
 My parents got into birdwatching... at scale. They've set out to thoroughly document what's going on in their yard on Galiano Island, BC: *Operation Galiwatch*. 

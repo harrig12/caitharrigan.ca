@@ -6,7 +6,6 @@ date: 01-11-2024
 author: Cait Harrigan
 categories:
   - citizen science
-  - passion project
 ---
 
 I recently put together a website to act as a guidebook to bees documented in the Pacific Maritime region of British Columbia. 
