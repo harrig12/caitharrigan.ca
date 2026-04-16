@@ -20,17 +20,7 @@ cv_entries <- cv_entries %>% subset(cv_show == T)
 :::
 
 
-::: {.column-margin}
-
-<a id=print_button href="files/cv.pdf" class="btn btn-outline-primary"><i class="fa-solid fa-download fa-xs"></i> Download as PDF</a>
-
-:::
-
-I am a postdoctoral researcher in the [Park lab](https://compbio.hms.harvard.edu/) at Harvard Medical School. I use machine learning to study cancer evolution and the selective forces shaping tumor development.
-
-I earned my PhD in Computer Science from the University of Toronto in 2026, supervised by [Quaid Morris](https://www.morrislab.ca/) and [Kieran Campbell](https://www.camlab.ca/). I was a Doctoral Fellow at the [UofT Data Sciences Institute](https://datasciences.utoronto.ca/) and a graduate researcher at the [Vector Institute](https://vectorinstitute.ai/) and [Ontario Institute for Cancer Research](https://oicr.on.ca/). In my thesis, I developed probabilistic models and Bayesian optimization approaches to study cancer evolution from DNA sequencing and spatial imaging data.
-
-I'm passionate about open science, and promoting great mentorship in the sciences. 
+I am a postdoctoral researcher in the [Park lab](https://compbio.hms.harvard.edu/) at Harvard Medical School. I use machine learning to study cancer evolution and the selective forces shaping tumor development. I earned my PhD in Computer Science from the University of Toronto in 2026, supervised by [Quaid Morris](https://www.morrislab.ca/) and [Kieran Campbell](https://www.camlab.ca/). I was a Doctoral Fellow at the [UofT Data Sciences Institute](https://datasciences.utoronto.ca/) and a graduate researcher at the [Vector Institute](https://vectorinstitute.ai/) and [Ontario Institute for Cancer Research](https://oicr.on.ca/). In my thesis, I developed probabilistic models and Bayesian optimization approaches to study DNA repair deficiencies using genomic sequencing and spatial proteomic data. I'm passionate about open science, and promoting great mentorship in the sciences. 
 
 ## Research interests 
 
