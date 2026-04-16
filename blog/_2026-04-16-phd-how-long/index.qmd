@@ -1,0 +1,13 @@
+---
+title: How long does it take to do a PhD?
+subtitle: Empirically tested. 
+image: Screenshot 2026-04-16 170605.png
+date: 16-04-2026
+engine: knitr
+categories:
+  - gradschool
+  
+draft: true
+---
+
+I recorded my time spent on various projects over the course of PhD life. Although 

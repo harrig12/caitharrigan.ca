@@ -1,123 +1,52 @@
----
-title: "Hi, I'm Cait"
----
+::: {.aside .center}
+# Cait Harrigan
 
-::: {.grid style="--bs-columns: 4; --bs-gap: 1rem;"}
+<img src="static/face_sm.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 80%; border-radius: 50%; padding: 20px;" alt="cait headshot">
 
-::: {.g-col-4 .g-col-sm-1}
 
-<img src="images/face_bw.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 80%; border-radius: 50%;" alt="cait headshot">
+<a href="mailto:charrigan(at)cs.toronto.edu" class="ul" role="button" aria-label="email"><i class="fa-solid fa-envelope"></i> Email me</a>
 
-::: {.grid style="--bs-columns: 5; --bs-gap: 1rem;"} 
-::: {.g-col-sm-2 .g-col-md-1}
-<a href="https://scholar.google.ca/citations?user=l4ElMEgAAAAJ&hl" class="btn btn-outline-primary contact-btn" role="button" aria-label="google scholar"><i class="ai ai-google-scholar ai-xl"></i></a>
+<a href="https://scholar.google.ca/citations?user=l4ElMEgAAAAJ&hl" class="ul" role="button" aria-label="google scholar"><i class="ai ai-google-scholar ai-xl"></i> Scholar</a>
+
+<a href="https://orcid.org/0000-0002-9243-9648" class="ul" role="button" aria-label="orcid"><i class="ai ai-orcid ai-xl"></i> ORCID</a>
+
+<a href="https://github.com/harrig12" class="ul" role="button" aria-label="github"><i class="fa-brands fa-github"></i> GitHub</a>
 :::
 
-::: {.g-col-sm-2 .g-col-md-1}
-<a href="https://orcid.org/0000-0002-9243-9648" class="btn btn-outline-primary" role="button" aria-label="orcid"><i class="ai ai-orcid ai-xl"></i></a>
+
+<div style="height: 70px;"></div>
+
+I am a postdoctoral researcher in the [Park lab](https://compbio.hms.harvard.edu/) at Harvard Medical School. I use machine learning to study cancer evolution, and the selective forces that shape disease development.
+
+I earned my PhD in Computer Science from the University of Toronto in 2026, supervised by [Quaid Morris](https://www.morrislab.ca/) and [Kieran Campbell](https://www.camlab.ca/). In my thesis, I developed probabilistic models and Bayesian optimization approaches to study DNA repair deficiencies in cancer. Previously, I completed my undergraduate studies at the University of Toronto in Computational Biology and Statistics.
+
+I'm passionate about open science, and promoting great mentorship in the sciences. 
+
+<div style="height: 30px;"></div>
+
+:::{.column-screen .hl-column}
+
+::: {.column-margin}
 :::
 
-::: {.g-col-sm-2 .g-col-md-1}
-<a href="https://github.com/harrig12" class="btn btn-outline-primary" role="button" aria-label="github"><i class="fa-brands fa-github"></i></a>
-:::
-
-::: {.g-col-sm-2 .g-col-md-1}
-<a href="https://linkedin.com/in/cait-harrigan" class="btn btn-outline-primary contact-btn" role="button" aria-label="linkedin"><i class="fa-brands fa-linkedin"></i></a>
-:::
-
-::: {.g-col-sm-2 .g-col-md-1}
-<a href="mailto:charrigan(at)cs.toronto.edu" class="btn btn-outline-primary" role="button" aria-label="email"><i class="fa-solid fa-envelope"></i></a>
-:::
-
-:::
-:::
-
-::: {.g-col-4 .g-col-sm-3}
-
-  I am a PhD candidate at the University of Toronto supervised by [Quaid Morris](https://www.morrislab.ca/) and [Kieran Campbell](https://www.camlab.ca/). I am a Doctoral Fellow at the [UofT Data Sciences Institute](https://datasciences.utoronto.ca/) and a graduate researcher at the [Vector Institute](https://vectorinstitute.ai/) and [Ontario Institute for Cancer Research](https://oicr.on.ca/). I use machine learning to understand cancer evolution.
-
-I did my undergraduate studies at the University of Toronto, in Computational Biology and Statistics. I'm passionate about open science, and promoting great mentorship in the sciences.
-
-I like to drink coffee and go hiking `r emo::ji('coffee')` `r emo::ji('snow_capped_mountain')` `r emo::ji('sun')`
-
-:::
-
-:::
-
-::: {.callout-note}
-
-## Office Hours
+# Office Hours
 
 As part of my ongoing commitment to supporting students at all levels and background in engaging with ML and computational biology, I make an effort to be available to provide mentorship, guidance, and resources. 
 
 I set aside ~2h/month for by-request 30 minute meetings, which you can [book online](https://calendly.com/caitharrigan/open-office-hours), or reach out to me by email to arrange times outside of those listed. 
 
 
+# News
+
+* Mar 2026: PhDone 🎓 
+* Jul 2025: I will be attending ICML in Vancouver for our poster on [SciGym](https://arxiv.org/abs/2507.02083)
+* Oct 2024: GAAP is back! Prospective graduate students of UofT CS should [apply now](https://sites.google.com/view/torontogaap)
+* Feb 2024: Excited to spend 3 months in London with the [McGranahan lab](https://www.ucl.ac.uk/medical-sciences/divisions/cancer/our-research/cancer-genome-evolution) via the Mitacs Globalink Research Internship program 
+* Oct 2023: I am now a [carpentries](https://carpentries.org/) certified instructor
+
+
 
 :::
-
-
-```{r, echo=F, warning=F, message=F}
-options(knitr.kable.NA = '')
-source('format_entries.R')
-
-cv_entries <- cv_entries %>% filter(website_show == T)
-```
-
-
-## Research 
-
-\* Indicates equal contribution  
-
-
-::: {.column-margin}
-
-<a id=print_button href="files/harrigan.bib" class="btn btn-outline-primary"><i class="fa-solid fa-download fa-xs"></i> Download as BibTeX</a>
-
-:::
-
-
-
-`r cv_entries %>% filter(grepl("publication", type)) %>% mutate(when = NA) %>% print_section() %>% gsub(pattern = 'Caitlin F. Harrigan', replacement = '**Caitlin F. Harrigan**')`
-
-
-### Posters
-
-`r cv_entries %>% filter(type=='poster') %>% print_section()`
-
-
-## Talks
-
-### Academic Talks
-
-`r cv_entries %>% filter(type=='talk_academic') %>% print_section()`
-
-### Guest Lectures
-
-`r cv_entries %>% filter(type=='guest_lecture') %>% print_section()`
-
-### Other Talks
-
-`r cv_entries %>% filter(type=='talk_other') %>% print_section()`
-
-
-
-## Teaching 
-
-### Research Mentorship
-
-`r cv_entries %>% filter(type=='supervision') %>% print_section()`
-
-### Testimonials 
-
-
-> "I was fortunate to work with Cait for almost a year and had a wonderful experience. She was patient, supportive, and skilled at explaining complicated concepts in biology and programming. As a mentor, she has a great sense of when to guide you through a problem and when to let you work through challenges on your own. She helped me grow as a researcher and writer and I’m grateful for everything I learned from her."
-
-> "As a mentor, Caitlin has greatly enhanced my ability to conduct research. She also provided valuable resources and aimed to make sure that I understood the fundamental concepts behind all the research conducted by breaking down difficult principles into easily comprehensible statements and thoughts. Additionally, she helped me find any sources of error as the research progressed. I enjoyed researching under her guidance, and I had an overall positive experience."  
-
-### Teaching Assistant Positions
-
-`r cv_entries %>% filter(type=='teaching') %>% print_section()`
 
 
 

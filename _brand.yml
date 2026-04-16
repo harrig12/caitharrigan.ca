@@ -1,0 +1,64 @@
+meta:
+  name: Cait Harrigan
+  link: https://www.caitharrigan.ca
+
+#https://coolors.co/f5f3f1-edeae6-3f3e3d-292929-212121-0f2e3d-acc8e5-a51228-d4cdc5
+
+color:
+  palette:
+    navy-blue: "#0F2E3D"
+    powder-blue: "#ACC8E5"
+    crimson: "#A51228"
+    pink: "#DC6E7E"
+    onyx: "#212121"
+    graphite: "#292929"
+    gunmetal: "#3F3E3D"
+    grey: "#D4CDC5"
+    parchment: "#EDEAE6"
+    white: "#F5F3F1"
+  background: 
+    light: white
+    dark: onyx
+  foreground: 
+    light: graphite
+    dark: grey
+  primary: 
+    light: powder-blue
+    dark: navy-blue
+  secondary: 
+    light: crimson
+    dark: pink
+  tertiary: 
+    light: parchment
+    dark: gunmetal
+  link: 
+    light: crimson
+    dark: powder-blue
+  
+
+logo:
+  small:     
+    light: static/ladybug_2_96.png
+    dark: static/ladybug_3_96.png
+  medium: 
+    light: static/ladybug_2_300.png
+    dark: static/ladybug_3_300.png
+
+typography:
+  fonts:
+    - family: Bebas Neue
+      source: google
+    - family: Inter #Bebas Neue, Cormorant , Besley
+      source: google
+    - family: Ovo
+      source: google
+    - family: Merriweather 
+      source: google
+    - family: Besley
+      source: google
+  base: Merriweather #Inter 
+  headings: 
+    family: Bebas Neue  #Bebas Neue
+    color:
+      dark: pink
+

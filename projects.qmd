@@ -1,0 +1,37 @@
+---
+pagetitle: "Projects"
+format:
+  html:
+    toc: false
+css: static/gallery.css
+listing:
+  - id: gallery
+    template: static/projects/gallery.ejs
+    contents: static/projects/gallery.yml
+---
+
+::: {#hero-banner .column-screen}
+::: {.grid .column-page}
+::: {.headline .g-col-lg-6 .g-col-12 .g-col-md-12}
+
+::: h1
+Projects
+:::
+
+I like to make stuff! Check it out
+
+- [Software](#software)
+- [Teaching](#teaching-materials)
+- [Data viz](#websites)
+- [... and more](#other-stuff)
+:::
+
+```{r, echo=F, message=F, error=F}
+#| classes: '.g-col-lg-6 .g-col-12 .g-col-md-12'
+#| warning: false
+source("static/projects/carousel.R")
+carousel("gallery-carousel", 5000, yaml.load_file("static/projects/carousel.yml"))
+```
+:::
+:::
+

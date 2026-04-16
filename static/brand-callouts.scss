@@ -1,0 +1,65 @@
+/*-- scss:rules --*/
+div.callout-note.callout-style-default > .callout-header {
+  background-color: $brand-powder-blue; 
+}
+
+div.callout-note.callout-style-default .callout-title-container,
+div.callout-note.callout-style-default .callout-header .callout-icon {
+  color: $brand-navy-blue;
+}
+
+div.callout-note.callout {
+  border-left-color: $brand-navy-blue;
+}
+
+.navbar-logo {
+  max-height: 45px; /* Adjust as needed */
+}
+
+
+/* site footer (page-footer in _quarto.yml) */
+footer.footer {
+  margin-top: 0rem;
+  padding-top: 0.5rem;
+}
+
+footer.footer .nav-footer-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+footer.footer .nav-footer-center p {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+footer.footer .nav-footer-center p:only-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+footer.footer .nav-footer-center img {
+  display: block;
+  margin-inline: auto;
+}
+
+body.quarto-light img.footer-logo-dark { display: none; }
+body.quarto-dark img.footer-logo-light { display: none; }
+
+
+
+.center{
+  text-align: center;
+}
+
+
+.hl-column {
+  background-color: var(--bs-tertiary-color);
+  margin-top: 2rem;
+  padding-bottom: 2rem;
+}

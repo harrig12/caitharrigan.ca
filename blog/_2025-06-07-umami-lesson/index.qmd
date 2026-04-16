@@ -1,0 +1,12 @@
+---
+title: Umami lesson
+subtitle: We still need experts 
+image: preview.png
+date: 12-04-2022
+engine: knitr
+categories:
+  - musing
+draft: true
+---
+
+

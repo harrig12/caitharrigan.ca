@@ -1,0 +1,79 @@
+
+- category: Software
+  description: ''
+  tiles:
+    #- title: SignaTree
+    #  subtitle: Mutational signatures in phylogenetic context
+    #  href: https://pmc.ncbi.nlm.nih.gov/articles/PMC6905203/
+    #  code: https://github.com/morrislab/TrackSigFreq
+    #  thumbnail: static/projects/signatree.png
+    - title: DAMTUA
+      subtitle: Signatures of DNA damage & repair
+      href: https://damuta.readthedocs.io/en/latest/index.html
+      code: https://github.com/morrislab/damuta
+      thumbnail: static/projects/damuta.png
+    - title: Twocan
+      subtitle: Multi-modal alignment for spatial proteomics
+      href: https://twocan.readthedocs.io/en/latest/index.html
+      code: https://github.com/camlab-bioml/twocan
+      thumbnail: static/projects/twocan.png
+    - title: TrackSigFreq
+      subtitle: Subclonal clustering in linear time
+      href: https://pmc.ncbi.nlm.nih.gov/articles/PMC6905203/
+      code: https://github.com/morrislab/TrackSigFreq
+      thumbnail: static/projects/tracksigfreq.png
+
+      
+- category: Teaching materials
+  description: ''
+  tiles:
+    - title: Workshop notebooks
+      subtitle: CrossTALK AI for drug discovery bootcamp
+      href: https://github.com/harrig12/crosstalk-q2-2025
+      code: https://github.com/harrig12/crosstalk-q2-2025
+      thumbnail: static/projects/crosstalk.png
+    - title: Exploratory data analysis
+      subtitle: Slides for PRISM 2022 workshop
+      href: slides/PRISM_2022.pdf
+      thumbnail: static/projects/prism.png
+    - title: Data storytelling
+      subtitle: Slides for Loyalist College guest lecture
+      href: slides/hummingbird_eda.slides.html
+      code: https://github.com/harrig12/hummingbird_eda
+      thumbnail: static/projects/hummingbird_eda.png
+            
+- category: Citizen science
+  description: ''
+  tiles:
+    - title: Operation Galiwatch
+      subtitle: A mission to extensively document my parent's backyard
+      href: https://galiwatch.ca
+      code: https://github.com/teaswamp-creations/galiwatch.ca
+      thumbnail: static/projects/galiwatch.png
+    - title: Xetthecum
+      subtitle: Digital ecocultural mapping project
+      href: https://imerss.github.io/xetthecum-storymap/
+      code: https://github.com/IMERSS/xetthecum-storymap
+      thumbnail: static/projects/xetthecum.png  
+    - title: Phenology dashboard
+      subtitle: Timing of plant growth and flowering in a pollinator garden
+      href: https://harrig12.shinyapps.io/garden_dashboard/
+      code: https://github.com/teaswamp-creations/phenology_dashboard
+      thumbnail: static/projects/phenology_dashboard.png
+    - title: Big book of bees
+      subtitle: Atlas of bees documented in the pacific maritime
+      href: https://teaswamp-creations.github.io/bee-book/
+      code: https://github.com/teaswamp-creations/bee-book
+      thumbnail: static/projects/bee_book.png
+      
+      
+- category: Other stuff
+  description: ''
+  tiles:
+    - subtitle: Botanical cyanotype
+      thumbnail: static/projects/cyanotype.png
+    - subtitle: Crochet socks
+      thumbnail: static/projects/socks.jpg
+    - subtitle: Hart house half marathon, 150 laps on a strangely small track
+      thumbnail: static/projects/hart_house_half.png
+      

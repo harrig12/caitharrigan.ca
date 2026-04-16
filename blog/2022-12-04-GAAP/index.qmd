@@ -1,0 +1,21 @@
+---
+title: Reflection on Toronto GAAP
+subtitle: Application help for prospective graduate students 
+image: preview.png
+date: 12-04-2022
+engine: knitr
+categories:
+  - mentorship
+draft: false
+---
+
+It's my second time organizing the [Toronto CS Graduate Application Assistance Program](https://sites.google.com/view/torontogaap) and it was a great experience!  
+
+The program matches current Computer Science graduate students with prospective students, with a focus for those who are underrepresented in computing. We were able to provide application feedback to 55 mentees. 
+
+
+Big thanks to the volunteers for their work `r emo::ji('sunflower')` we got lots of positive coments and grateful messages from mentees. 
+
+I'm looking forward to running this program again next year!
+
+

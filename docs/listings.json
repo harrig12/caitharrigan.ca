@@ -2,17 +2,22 @@
   {
     "listing": "/blog.html",
     "items": [
-      "/posts/2025-01-15-citeseq-cbinb/index.html",
-      "/posts/2024-03-30-xetthecum-storymapping/index.html",
-      "/posts/2024-03-29-chatgpt-custom-instructions/index.html",
-      "/posts/2024-01-11-bee-book/index.html",
-      "/posts/2023-12-15-data-driven-cv/index.html",
-      "/posts/2023-11-29-notion-research-dashboard/index.html",
-      "/posts/2021-10-24-writing-strategies-for-government-scholarships/index.html",
-      "/posts/2022-01-30-galiwatch/index.html",
-      "/posts/2021-11-08-undergraduate-research-at-uoft/index.html",
-      "/posts/2021-09-05-ode-to-zotero/index.html",
-      "/posts/2021-05-04-how-to-be-a-good-grad-student/index.html"
+      "/blog/2025-01-15-citeseq-cbinb/index.html",
+      "/blog/2024-03-30-xetthecum-storymapping/index.html",
+      "/blog/2024-03-29-chatgpt-custom-instructions/index.html",
+      "/blog/2024-01-11-bee-book/index.html",
+      "/blog/2023-12-15-data-driven-cv/index.html",
+      "/blog/2023-11-29-notion-research-dashboard/index.html",
+      "/blog/2022-12-04-GAAP/index.html",
+      "/blog/2021-10-24-writing-strategies-for-government-scholarships/index.html",
+      "/blog/2022-01-30-galiwatch/index.html",
+      "/blog/2021-11-08-undergraduate-research-at-uoft/index.html",
+      "/blog/2021-09-05-ode-to-zotero/index.html",
+      "/blog/2021-05-04-how-to-be-a-good-grad-student/index.html"
     ]
+  },
+  {
+    "listing": "/projects.html",
+    "items": []
   }
 ]

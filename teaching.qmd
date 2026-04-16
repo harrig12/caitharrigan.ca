@@ -1,0 +1,39 @@
+---
+title: "Teaching"
+format: 
+  html:
+    toc: true
+    toc-location: left
+---
+  
+  
+```{r, echo=F, warning=F, message=F}
+source('static/format_entries.R')
+cv_entries <- cv_entries %>% filter(website_show == T)
+```
+
+
+For slides, source code, and additional sample teaching materials see my [projects page](/projects.html#teaching-materials).
+
+
+
+## Guest Lectures
+
+`r cv_entries %>% filter(type=='guest_lecture') %>% print_section()`
+
+  
+
+## Research Mentorship
+
+`r cv_entries %>% filter(type=='supervision') %>% print_section()`
+
+## Testimonials 
+
+> "I was fortunate to work with Cait for almost a year and had a wonderful experience. She was patient, supportive, and skilled at explaining complicated concepts in biology and programming. As a mentor, she has a great sense of when to guide you through a problem and when to let you work through challenges on your own. She helped me grow as a researcher and writer and I’m grateful for everything I learned from her."
+
+> "As a mentor, Caitlin has greatly enhanced my ability to conduct research. She also provided valuable resources and aimed to make sure that I understood the fundamental concepts behind all the research conducted by breaking down difficult principles into easily comprehensible statements and thoughts. Additionally, she helped me find any sources of error as the research progressed. I enjoyed researching under her guidance, and I had an overall positive experience."  
+
+## Teaching Assistant Positions
+
+`r cv_entries %>% filter(type=='teaching') %>% print_section()`
+

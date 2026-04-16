@@ -1,0 +1,132 @@
+
+/* index */
+
+.cv-btn{
+  font-size: 0.8rem;
+  float: right;
+  padding: .2rem .3rem;
+  margin: .2em;
+}
+
+/* CV */
+
+.entry-when{
+  text-align: right;
+  display: block;
+}
+
+.entry-txt{
+  margin-bottom: 0rem;
+  font-size: 0.8em;
+}
+
+.cv-line{
+  width: 100%;
+  height: 0px;
+  margin-bottom: 0.8rem;
+}
+
+@media screen {
+  
+  .grid.cv-entry{
+    --bs-columns: 2; 
+    --bs-gap: 0.5rem; 
+    margin-bottom: 0.6rem;
+    grid-template-columns: 80% 20%
+  }
+  
+  .grid.pub{
+    --bs-columns: 2; 
+    --bs-gap: 0.5rem; 
+    margin-bottom: 0.6rem;
+    grid-template-columns: 80% 20%
+  }
+  
+  .entry-bold{
+    font-size: 1.2em;
+  }
+  
+  #cv_print_header {display: none;} 
+}
+
+
+@media print { 
+
+  /* remove fixed-nav offset in print */
+  body.nav-fixed { 
+    padding-top: 0 !important; 
+  }
+    
+  .navbar, #print_button,.btn.btn-outline-secondary.cv-btn {
+    display: none ;
+    color: transparent;
+    padding-top: 0;
+  }
+    
+  /* create header for printed version of CV */
+  #cv_print_header{  
+    display: block;
+    text-align: center;
+    font-size: 15pt; 
+    font-weight:400; 
+    margin-bottom: 0.5em
+    
+  }
+  
+  .title{
+    font-size: 15pt;
+    color: #000000 !important;
+    text-align: center;
+    margin-top: 0;
+    margin-block-start: 0;
+    padding: 0 ;
+        
+  }
+  
+  /* hide link destinations when printing */ 
+  a, a:hover, a:focus, a:active {
+      color: inherit; 
+  }
+  
+  body, p, ol, span, div.short-entry{
+    font-family: serif;
+    font-size: 11pt;
+    margin-bottom: 0pt;
+    padding-bottom: 0pt;
+    /*transform: translate(0, -0.9cm);*/
+  }
+  
+  /*.cv-line{transform: translate(0, -0.9cm)}*/
+
+  h2 {
+    margin-top: 5pt;
+    margin-bottom: 0pt;
+    border-bottom: none;
+    font-size: 12pt;
+    font-family: serif;
+    color: #A51228;
+    font-variant-caps: all-small-caps;
+    /*transform: translate(0, -.8cm);*/
+  }
+  
+  .grid.cv-entry{
+    --bs-columns: 2; 
+    --bs-gap: 8pt; 
+    grid-template-columns: auto 2.6cm;
+  }
+  
+  .grid.pub{
+    --bs-columns: 2; 
+    margin-top: 6pt;
+    grid-template-columns: auto 0.01cm;
+  }
+  
+  @page { 
+    margin-top: 1cm;
+    margin-bottom: 1cm;
+    
+  }
+  
+
+}
+

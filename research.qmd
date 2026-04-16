@@ -1,0 +1,44 @@
+---
+title: "Research"
+format: 
+  html:
+    toc: true
+    toc-location: left
+---
+
+
+```{r, echo=F, warning=F, message=F}
+source('static/format_entries.R')
+cv_entries <- cv_entries %>% filter(website_show == T)
+```
+    
+## Talks
+
+`r cv_entries %>% filter(type=='talk_academic') %>% print_section()`
+
+
+## Publications 
+
+\*, <sup>†</sup> Indicates equal contribution  
+
+
+
+```{r, echo=F, warning=F, message=F}
+publications <- cv_entries %>% 
+  filter(grepl("publication", type)) %>% 
+  mutate(when = NA) %>% print_section() %>% 
+  gsub(pattern = 'Caitlin F. Harrigan', replacement = '<u>Caitlin F. Harrigan</u>')
+```
+
+`r publications`
+
+## Posters
+
+`r cv_entries %>% filter(type=='poster') %>% print_section()`
+
+
+
+
+
+    
+    
