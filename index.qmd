@@ -4,7 +4,7 @@
 <img src="static/face_sm.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 80%; border-radius: 50%; padding: 20px;" alt="cait headshot">
 
 
-<a href="mailto:charrigan(at)cs.toronto.edu" class="ul" role="button" aria-label="email"><i class="fa-solid fa-envelope"></i> Email me</a>
+<a href="mailto:caitlin_harrigan(at)hms.harvard.edu" class="ul" role="button" aria-label="email"><i class="fa-solid fa-envelope"></i> Email me</a>
 
 <a href="https://scholar.google.ca/citations?user=l4ElMEgAAAAJ&hl" class="ul" role="button" aria-label="google scholar"><i class="ai ai-google-scholar ai-xl"></i> Scholar</a>
 
@@ -33,7 +33,7 @@ I'm passionate about open science, and promoting great mentorship in the science
 
 As part of my ongoing commitment to supporting students at all levels and background in engaging with ML and computational biology, I make an effort to be available to provide mentorship, guidance, and resources. 
 
-I set aside ~2h/month for by-request 30 minute meetings, which you can [book online](https://calendly.com/caitharrigan/open-office-hours), or reach out to me by email to arrange times outside of those listed. 
+I set aside ~2h/month for by-request 30 minute meetings, which you can [book online](https://calendar.notion.so/meet/charrigan/office-hours), or reach out to me by email to arrange times outside of those listed. 
 
 
 # News
